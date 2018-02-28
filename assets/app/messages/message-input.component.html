@@ -1,7 +1,8 @@
 <div class="col-md-8 col-md-offset-2">
     <div class="form-group">
         <label for="content">Content</label>
-        <input type="text" id="content" class="form-control">
+        <input type="text" id="content" class="form-control" #input> 
+        <!--># denotes a reference. we can use it anywhere within the template<-->
     </div>
-    <button class="btn btn-primary" type="submit">Save</button>
+    <button class="btn btn-primary" type="submit" (click)="onSave(input.value)">Save</button>
 </div>
