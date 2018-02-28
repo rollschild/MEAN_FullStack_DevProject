@@ -13,8 +13,8 @@ import { OnInit } from "@angular/core";
                 *ngFor="let message of messages">
                 </app-message>
         </div>
-    `,
-    providers: [MessageService]
+    `
+    // providers: [MessageService]
 })
 
 export class MessageListComponent implements OnInit {
@@ -30,7 +30,7 @@ export class MessageListComponent implements OnInit {
     constructor(private messageService : MessageService) {
 
     }
-
+    // this is one instance per component mode
     ngOnInit() {
         // assign this array from service to this component
         this.messages = this.messageService.getMessages();
