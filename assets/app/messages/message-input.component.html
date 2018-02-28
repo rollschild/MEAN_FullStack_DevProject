@@ -1,8 +1,18 @@
 <div class="col-md-8 col-md-offset-2">
-    <div class="form-group">
-        <label for="content">Content</label>
-        <input type="text" id="content" class="form-control" #input> 
-        <!--># denotes a reference. we can use it anywhere within the template<-->
-    </div>
-    <button class="btn btn-primary" type="submit" (click)="onSave(input.value)">Save</button>
+    <form (ngSubmit)="onSubmit(f)" #f="ngForm" ngNativeValidate> <!-->We don't need no action directive; Angular will handle this for us<-->
+        <div class="form-group">
+            <label for="content">Content</label>
+            <input 
+                type="text" id="content" class="form-control" 
+                ngModel 
+                name="content"
+                required><!-->#input<-->
+                <!-->ngMode: this input should be registered as a control of the form which
+                    should be automatically derived by Angular<-->
+            <!--># denotes a reference. we can use it anywhere within the template
+            <-->
+        </div>
+        <button class="btn btn-primary" type="submit">Save</button>
+        <!-->(click)="onSave(input.value)"<-->
+    </form>
 </div>
