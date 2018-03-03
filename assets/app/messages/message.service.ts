@@ -28,7 +28,20 @@ export class MessageService {
 
     }
     getMessages() {
-        return this.messages;
+        // return this.messages;
+        return this.http.get('http://localhost:3000/message')
+            .map((response: Response) => {
+                const messages = response.json().obj;
+                // messages on server have different weird fields
+                let transformedMessages: Message[] = [];
+                for(let message of messages) {
+                    transformedMessages.push(new Message(message.content, 'Dunmmy', message.id, null));
+                }
+                this.messages = transformedMessages;
+                return transformedMessages;
+                // a new Observable will be automatically created
+            })
+            .catch((error: Response) => Observable.throw(error.json()));
     }
     deleteMessage(message: Message) {
         this.messages.splice(this.messages.indexOf(message), 1);
