@@ -6,6 +6,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var appRoutes = require('./routes/app');
+var messageRoutes = require('./routes/messages');
 var mongooseUniqueValidator = require('mongoose-unique-validator');
 var app = express();
 mongoose.connect('mongodb://root:password_root@127.0.0.1:27017/node-angular');
@@ -27,7 +28,8 @@ app.use(function (req, res, next) {
     res.setHeader('Access-Control-Allow-Methods', 'POST, GET, PATCH, DELETE, OPTIONS');
     next();
 });
-
+app.use('/message', messageRoutes); // messageRoutes should come before appRoutes
+// more specific routes should come first
 app.use('/', appRoutes);
 
 // catch 404 and forward to error handler

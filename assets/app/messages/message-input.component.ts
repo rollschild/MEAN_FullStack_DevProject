@@ -17,7 +17,11 @@ export class MessageInputComponent {
         // console.log(form);
         
         const message = new Message(form.value.content, 'JobiJobi');
-        this.messageService.addMessage(message);
+        this.messageService.addMessage(message)
+            .subscribe(
+                data => console.log(data),
+                error => console.error(error)
+            );
         form.resetForm();
     }
 }
