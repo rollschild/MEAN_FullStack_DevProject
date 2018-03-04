@@ -3,8 +3,10 @@
         <div class="form-group">
             <label for="content">Content</label>
             <input 
-                type="text" id="content" class="form-control" 
-                ngModel 
+                type="text" 
+                id="content" 
+                class="form-control" 
+                [ngModel]="message?.content" 
                 name="content"
                 required><!-->#input<-->
                 <!-->ngMode: this input should be registered as a control of the form which
@@ -12,6 +14,7 @@
             <!--># denotes a reference. we can use it anywhere within the template
             <-->
         </div>
+        <button type="button" class="btn btn-danger" (click)="onClear(f)">Clear</button>
         <button class="btn btn-primary" type="submit">Save</button>
         <!-->(click)="onSave(input.value)"<-->
     </form>

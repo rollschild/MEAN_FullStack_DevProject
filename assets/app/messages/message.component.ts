@@ -25,17 +25,21 @@ import { MessageService } from "./message.service";
 })
 export class MessageComponent {
     @Input('inputMessage') message: Message; // assignable from outside
-    @Output() editClicked = new EventEmitter<string>(); // EventEmitter is generic
+    // @Output() editClicked = new EventEmitter<string>(); // EventEmitter is generic
     color = 'red';
 
     constructor(private messageService: MessageService) {}
 
     onEdit() {
         // alert('It\'s an alert and it worked!!!');
-        this.editClicked.emit('I\'m gonna cum!!!'); // to emit a new event!!!
+        // this.editClicked.emit('I\'m gonna cum!!!'); // to emit a new event!!!
+        this.messageService.editMessage(this.message);
     };
     onDelete() {
         // same instance!!!
-        this.messageService.deleteMessage(this.message);
+        this.messageService.deleteMessage(this.message)
+            .subscribe(
+                result => console.log(result)
+            );
     }
 }
