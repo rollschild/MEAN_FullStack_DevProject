@@ -19,11 +19,14 @@ export class MessageService {
         const headers = new Headers({
             'Content-Type': 'application/json'
         });
+        const token = localStorage.getItem('token') 
+            ? '?token=' + localStorage.getItem('token') 
+            : '';
         // use HTTP service
         // NOTICE: this does NOT send the request
         // it only creates an observable
         // because so far no one has subscribed to the observable
-        return this.http.post('http://localhost:3000/message', body, {headers: headers})
+        return this.http.post('http://localhost:3000/message' + token, body, {headers: headers})
             .map((response: Response) => {
                 const result = response.json();
                 const message = new Message(result.obj.content, 'JobiJobi', result.obj._id, null);
@@ -57,7 +60,10 @@ export class MessageService {
     updateMessage(message: Message) {
         const body = JSON.stringify(message);
         const headers = new Headers({'Content-Type': 'application/json'});
-        return this.http.patch('http://localhost:3000/message/' + message.messageId, body, {headers: headers})
+        const token = localStorage.getItem('token')
+            ? '?token=' + localStorage.getItem('token')
+            : '';
+        return this.http.patch('http://localhost:3000/message/' + message.messageId + token, body, {headers: headers})
             .map((response: Response) => response.json())
             .catch((error: Response) => Observable.throw(error.json()));
     }
@@ -65,8 +71,11 @@ export class MessageService {
     deleteMessage(message: Message) {
         // we want to keep this splice() method because
         // we still want to remove it from the front-end
+        const token = localStorage.getItem('token')
+            ? '?token=' + localStorage.getItem('token')
+            : '';
         this.messages.splice(this.messages.indexOf(message), 1);
-        return this.http.delete('http://localhost:3000/message/' + message.messageId)
+        return this.http.delete('http://localhost:3000/message/' + message.messageId + token)
             .map((response: Response) => response.json())
             .catch((error: Response) => Observable.throw(error.json()));
     }
