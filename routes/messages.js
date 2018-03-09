@@ -6,6 +6,10 @@ var User = require('../models/user');
 // to fetch messages from database
 router.get('/', function(req, res, next) {
     Message.find()
+        .populate('user', 'firstName') // to expand the data I retrieve
+    // by default it would only give me the message object
+    // but now we have the reference to the user model in ../models/messages.js
+        // now each message has user ID and firstName attached
         .exec(function(err, messages) {
             if(err) {
                 return res.status(500).json({
@@ -52,7 +56,7 @@ router.post('/', function(req, res, next) {
         }
         var message = new Message({
             content: req.body.content,
-            user: user._id
+            user: user//._id // here the user object is already attached to the message
         });
         message.save(function (err, result) {
             if (err) {
@@ -64,7 +68,7 @@ router.post('/', function(req, res, next) {
             user.messages.push(result);
             user.save(); // save this upadted user
             // where we push the new message on the stack of messages
-            res.status(201).json({
+            return res.status(201).json({
                 message: 'New message saved! ',
                 obj: result
             });
@@ -73,6 +77,7 @@ router.post('/', function(req, res, next) {
 });
 
 router.patch('/:id',function(req, res, next) {
+    var decoded = jwt.decode(req.query.token);
     Message.findById(req.params.id, function(err, message) {
         if(err) {
             return res.status(500).json({
@@ -86,6 +91,12 @@ router.patch('/:id',function(req, res, next) {
                 error: {message: 'Message not found!'}
             });
         };
+        if(message.user != decoded.user._id) {
+            return res.status(401).json({
+                title: 'Not authenticated!!!',
+                error: {message: 'User does not matach!!!'}
+            })
+        }
         message.content = req.body.content;
         message.save(function(err, result) {
             if (err) {
@@ -106,6 +117,7 @@ router.patch('/:id',function(req, res, next) {
 }); // change existing data
 
 router.delete('/:id', function(req, res, next) {
+    var decoded = jwt.decode(req.query.token);
     Message.findById(req.params.id, function (err, message) {
         if (err) {
             return res.status(500).json({
@@ -119,6 +131,12 @@ router.delete('/:id', function(req, res, next) {
                 error: { message: 'Message not found!' }
             });
         };
+        if (message.user != decoded.user._id) {
+            return res.status(401).json({
+                title: 'Not authenticated!!!',
+                error: { message: 'User does not matach!!!' }
+            })
+        }
         message.remove(function (err, result) {
             if (err) {
                 return res.status(500).json({
