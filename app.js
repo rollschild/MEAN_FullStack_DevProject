@@ -10,7 +10,7 @@ var messageRoutes = require('./routes/messages');
 var userRoutes = require('./routes/users')
 var mongooseUniqueValidator = require('mongoose-unique-validator');
 var app = express();
-mongoose.connect('mongodb://admin:password@127.0.0.1:27017/node-angular');
+mongoose.connect('mongodb://admin:password@ds211029.mlab.com:11029/node-angular');
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
