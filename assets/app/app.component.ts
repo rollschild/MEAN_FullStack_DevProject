@@ -10,7 +10,7 @@ import { MessageService } from "./messages/message.service";
     // create a one single instance of this service for 
     // this component and all child components,
     // namely app-message-list and app-message-input
-    providers: [MessageService]
+    // providers: [MessageService]
 })
 export class AppComponent {
     
