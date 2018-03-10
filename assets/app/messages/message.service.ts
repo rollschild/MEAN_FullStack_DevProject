@@ -27,7 +27,7 @@ export class MessageService {
         // NOTICE: this does NOT send the request
         // it only creates an observable
         // because so far no one has subscribed to the observable
-        return this.http.post('http://localhost:3000/message' + token, body, {headers: headers})
+        return this.http.post('https://rolls-mean-messenger.herokuapp.com/message' + token, body, {headers: headers})
             .map((response: Response) => {
                 const result = response.json();
                 const message = new Message(result.obj.content, result.obj.user.firstName, result.obj._id, result.obj.user._id);
@@ -42,7 +42,7 @@ export class MessageService {
     }
     getMessages() {
         // return this.messages;
-        return this.http.get('http://localhost:3000/message')
+        return this.http.get('https://rolls-mean-messenger.herokuapp.com/')
             .map((response: Response) => {
                 const messages = response.json().obj;
                 // messages on server have different weird fields
@@ -70,7 +70,7 @@ export class MessageService {
         const token = localStorage.getItem('token')
             ? '?token=' + localStorage.getItem('token')
             : '';
-        return this.http.patch('http://localhost:3000/message/' + message.messageId + token, body, {headers: headers})
+        return this.http.patch('https://rolls-mean-messenger.herokuapp.com/message/' + message.messageId + token, body, {headers: headers})
             .map((response: Response) => response.json())
             .catch((error: Response) => Observable.throw(error.json()));
     }
@@ -82,7 +82,7 @@ export class MessageService {
             ? '?token=' + localStorage.getItem('token')
             : '';
         this.messages.splice(this.messages.indexOf(message), 1);
-        return this.http.delete('http://localhost:3000/message/' + message.messageId + token)
+        return this.http.delete('https://rolls-mean-messenger.herokuapp.com/message/' + message.messageId + token)
             .map((response: Response) => response.json())
             .catch((error: Response) => {
                 this.errorService.handleError(error.json());
